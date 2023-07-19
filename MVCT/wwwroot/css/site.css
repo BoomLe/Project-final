@@ -16,3 +16,184 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+/* css of login form */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ccc;
+}
+
+.login-form {
+    width: 40%;
+    padding: 10px;
+    border-radius: 5px;
+    /* position: relative; */
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #00b5ad;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+.imgcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    /* width: 10%; */
+}
+
+    .imgcontainer div {
+        font-size: 2vw;
+        color: #00b5ad;
+    }
+
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+.container {
+    padding: 16px;
+    max-width: 40%;
+    /* background-color: rgb(223, 223, 211); */
+    margin: 0 auto;
+    width: 100%;
+    overflow-x: auto;
+    position: fixed;
+    left: 30%;
+    top: 10%;
+    resize: none;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+.img-color {
+    margin-right: 0;
+    width: 15%;
+    padding-right: 18px;
+}
+
+.sig-contener {
+    margin: 0 auto;
+    background-color: rgb(255, 255, 255);
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+}
+
+.form-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: solid;
+    border-color: #ccc;
+    border-width: 1px;
+    background-color: white;
+    padding-left: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+    .form-item i {
+        font-size: 1.5vw;
+        color: #ccc;
+     
+    }
+
+    .form-item input {
+        width: 100%;
+        font-size: 1.1vw;
+        border: none !important;
+        outline: none !important;
+        margin: 0;
+        margin-left: 5px;
+    }
+
+.container-boxinput {
+    width: 100%;
+}
+
+.login-inbox {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+
+    .cancelbtn {
+        width: 100%;
+    }
+}
+
+.highlight {
+    border: 1px solid rgba(14, 25, 176, 0.489); /* Đặt màu và kích thước viền khi được nhấp */
+}
+
+.bt-submit {
+    border-radius: 5px;
+    font-size: 1.3vw;
+    margin-top: 10px;
+}
+
+/*  css for alert */
+.alert-container {
+    background-color: white;
+    padding: 5px 0;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    display: none;
+}
+
+    .alert-container > ul > li {
+        padding: 3px;
+    }
+
+.login_wrong {
+    color: red;
+    border: 1px red solid;
+    background-color: #fff6f6;
+}
+/* .item-alert{
+  display: block;
+} */
