@@ -1,4 +1,5 @@
-﻿using MVCT.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MVCT.Data;
 using MVCT.IRepository;
 using MVCT.Models.Attandance;
 
@@ -12,14 +13,24 @@ namespace MVCT.Repository.ICheckinRepository
             _db = db;
         }
 
-   
-
         public async Task<Attandances> UpdatedAsync(Attandances attandances)
         {
-            dbSet.Update(attandances);
-            await SaveAsync();
+            // Set the state of the entity to Modified
+            _db.Entry(attandances).State = EntityState.Modified;
+
+            // Save the changes to the database
+            await _db.SaveChangesAsync();
 
             return attandances;
         }
+
+        //public async Task<Attandances> UpdatedAsync(Attandances attandances)
+        //{
+        //    _db.Entry(attandances).State = EntityState.Modified;
+        //           await _db.SaveChangesAsync();
+
+
+        //    return attandances;
+        //}
     }
 }

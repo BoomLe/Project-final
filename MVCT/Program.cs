@@ -96,7 +96,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddSingleton<IdentityErrorDescriber, AppIdentityErrorDescriber>();
 builder.Services.AddScoped<IAttandancesRepository, AttandancesRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
-
+builder.Services.AddSingleton<Attandances>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -13,3 +13,9 @@ function loadDataTable() {
         ]
     });
 }
+
+$(document).ready(function () {
+    $('.btn[data-toggle="collapse"]').on('click', function () {
+        $(this).toggleClass('collapsed');
+    });
+});

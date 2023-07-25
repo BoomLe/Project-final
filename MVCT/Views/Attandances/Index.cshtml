@@ -1,75 +1,92 @@
 ﻿@using MVCT.Models.Attandance;
 @model IEnumerable<AttandanceInfo>
-
 @{
     ViewData["Title"] = "Index";
     int i = 0;
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bootstrap Table Collapse/Expand Rows with Sub-table</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="Container mt-5">
+        <h2>Collapsible Table with Sub-table</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>CurrentDate</th>
+                    <th>Checkin</th>
+                    <th>Checkout</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var attandance in Model)
+                {
+                    i++;
+                    var @todayAttandances = attandance.Attandances;
+                    <tr>
+                        <td>@attandance.Username</td>
+                        <td>@attandance.CurrentDate.ToString("dd-MM-yyyy")</td>
+                        <td>@attandance.CheckIn</td>
+                        <td>@attandance.CheckOut</td>
+                
+                        <td><button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#details@(i)">Details</button></td>
 
 
+                    </tr>
+                    @*  <tr id="details@{i.ToString();}" class="collapse">*@
+                    <tr id="details@(i)" class="collapse">
+                        <td colspan="5">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>DateTime</th>
 
+                                        <th></th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
+                                    @foreach (var item in @todayAttandances)
+                                    {
+                                        <tr>
+                                            <td>@(++i)</td>
+                                            <td>@item.DataTime.ToString("dd-MM-yyyy HH:mm:ss ")</td>
+                                            <td> <a asp-controller="Attandances" asp-action="Update" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a></td>
+                                            <td>
+                                                <a asp-controller="Attandances" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                             </td>
+                                        </tr>
+                                    }
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2"> Checkins</h2>
-            </div>
-        </div>
+                                    <!-- Add more rows for details as needed -->
+                                </tbody>
 
+                            </table>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-    <div class="card-body p-4">
-         <div class = "row pb-3">
-        <div class="col-6 "> </h2></div>
-       
-    </div>
-        <table id="tblData" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>STT</th>
-            <th>Date</th>
-            <th>UserName</th>
-            <th>Check-In</th>
-            <th>Check-Out</th>
-         
-        </tr>
-    </thead>
-    <tbody>
-      @foreach (var obj in Model)
-      {
-        <tr>
-            <td>@(++i)</td>
-            <td>
-                @obj.CurrentDate.ToString("dd-MM-yyyyy")
-            </td>
-            <td>
-                @obj.Username
-            </td>
-            <td>
-                            @if (@obj.CheckIn != null)
-                            {
-                                @obj.CheckIn.Value.ToString("HH:mm:ss")
-                            }
-            </td>
-            <td>
-                            @if (@obj.CheckOut != null)
-                            {
-                                @obj.CheckOut.Value.ToString("HH:mm:ss")
-                            }
-            </td>
-            <td>
-               
-            </td>
-        </tr>
-        
-      }
-    </tbody>
-</table>
-    </div>
-    </div>
 
-@section Scripts{
-    <script src="~/js/product.js"></script>
-}
 
+
+</body>
+</html>
+
+
+<!-- Add Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<script src="/js/product.js"></script>

@@ -62,10 +62,7 @@ namespace MVCT.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _repository == null)
-            {
-                return NotFound();
-            }
+         
 
             var detailReport = await _repository.GetAsync(p => p.Id == id);
             if (detailReport == null)
@@ -79,10 +76,7 @@ namespace MVCT.Controllers
         [HttpGet()]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
+         
 
             UserReports listReport = await _repository.GetAsync(p => p.Id == id);
 

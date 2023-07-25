@@ -1,0 +1,16 @@
+﻿@using MVCT.Models.Attandance;
+@model Attandances
+
+<form asp-action="Update">
+    <br />
+    <div class="Container border p-3">
+        <h1 class="text-secondary text-center">Update Attendance</h1>
+        <!-- Display the attendance record details here -->
+        <div class="form-group">
+            <label for="DataTime">Date and Time:</label>
+            <input type="datetime" class="form-control" id="DataTime" name="DataTime" value="@Model.DataTime" required>
+        </div>
+        <!-- Add any additional fields you want to update -->
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
