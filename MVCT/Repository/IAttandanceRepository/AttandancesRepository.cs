@@ -24,13 +24,6 @@ namespace MVCT.Repository.ICheckinRepository
             return attandances;
         }
 
-        //public async Task<Attandances> UpdatedAsync(Attandances attandances)
-        //{
-        //    _db.Entry(attandances).State = EntityState.Modified;
-        //           await _db.SaveChangesAsync();
 
-
-        //    return attandances;
-        //}
     }
 }

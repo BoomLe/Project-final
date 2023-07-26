@@ -11,7 +11,7 @@ namespace MVCT.Models.Attandance
 
         [BindProperty]
         [DataType(DataType.DateTime)]
-        public DateTime DataTime { set; get; }
+        public DateTime DateTime { set; get; }
 
         public string? UserId { set; get; }
 

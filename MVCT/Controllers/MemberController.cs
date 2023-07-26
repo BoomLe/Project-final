@@ -27,18 +27,18 @@ namespace MVCT.Controllers
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            List<Attandances> attendancesTody = await _repository.GetAllAsync((p => p.UserId == user.Id && p.DataTime.Date == DateTime.Now.Date));
+            List<Attandances> attendancesTody = await _repository.GetAllAsync((p => p.UserId == user.Id && p.DateTime.Date == DateTime.Now.Date));
 
             DateTime? checkIn = null;
             DateTime? checkOut = null;
 
             if (attendancesTody.Any())
             {
-                checkIn = attendancesTody.First().DataTime;
+                checkIn = attendancesTody.First().DateTime;
 
                 if (attendancesTody.Count > 1)
                 {
-                    checkOut = attendancesTody.Last().DataTime;
+                    checkOut = attendancesTody.Last().DateTime;
                 }
             }
             var model = new MemberAttandanceInfo
@@ -58,7 +58,7 @@ namespace MVCT.Controllers
             //Tạo Post
             Attandances newpost = new Attandances()
             {
-                DataTime = DateTime.Now,
+                DateTime = DateTime.Now,
                 UserId = user.Id
             };
             await _repository.CreatedAsync(newpost);

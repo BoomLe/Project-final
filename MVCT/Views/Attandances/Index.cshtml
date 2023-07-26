@@ -1,5 +1,5 @@
 ﻿@using MVCT.Models.Attandance;
-@model IEnumerable<AttandanceInfo>
+@model IEnumerable<AttandanceDTO>
 @{
     ViewData["Title"] = "Index";
     int i = 0;
@@ -29,18 +29,19 @@
                 @foreach (var attandance in Model)
                 {
                     i++;
-                    var @todayAttandances = attandance.Attandances;
+                    var todayAttandances = attandance.Attandances;
                     <tr>
                         <td>@attandance.Username</td>
-                        <td>@attandance.CurrentDate.ToString("dd-MM-yyyy")</td>
+                        <td>@attandance.DateTime.ToString("dd-MM-yyyy")</td>
                         <td>@attandance.CheckIn</td>
                         <td>@attandance.CheckOut</td>
-                
+
+                  @*      <td>
+                            <!-- Add data-toggle and data-target attributes to open the modal -->
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateModal" data-id="@todayAttandances.FirstOrDefault().Id">Edit</button>
+                        </td>*@
                         <td><button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#details@(i)">Details</button></td>
-
-
                     </tr>
-                    @*  <tr id="details@{i.ToString();}" class="collapse">*@
                     <tr id="details@(i)" class="collapse">
                         <td colspan="5">
                             <table class="table">
@@ -48,45 +49,103 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>DateTime</th>
-
                                         <th></th>
                                         <th>Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    @foreach (var item in @todayAttandances)
+                                    @foreach (var item in todayAttandances)
                                     {
                                         <tr>
                                             <td>@(++i)</td>
-                                            <td>@item.DataTime.ToString("dd-MM-yyyy HH:mm:ss ")</td>
-                                            <td> <a asp-controller="Attandances" asp-action="Update" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a></td>
+                                            <td>@item.DateTime.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                                            <td>
+                                                <!-- Use the actual URL for the Edit action with the specific ID -->
+                   
+
+                                                <a href="@Url.Action("Update", "Attandances", new { id = item.Id })" class="btn btn-success btn-sm">Edit</a>
+                                            </td>
                                             <td>
                                                 <a asp-controller="Attandances" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                                             </td>
+                                            </td>
                                         </tr>
                                     }
-
-                                    <!-- Add more rows for details as needed -->
                                 </tbody>
-
                             </table>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 
+    <!-- Modal for updating attendance -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Attendance</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add the form fields for updating attendance -->
+                    <form asp-action="Update">
+                        <input type="hidden" id="updateId" name="Id" />
+                        <div class="form-group">
+                            <label for="updateDateTime">Date and Time:</label>
+                            <input type="datetime" class="form-control" id="updateDateTime" name="DateTime"  required>
+                        </div>
+                        <!-- Add any additional fields you want to update -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="updateAttendance()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Add Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <script>
+        // Handle the modal shown event to populate the form fields when the modal is shown
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var id = button.data('id'); // Extract the ID from data-id attribute of the button
+
+            // Fetch attendance data for the specific ID using an API endpoint or AJAX call
+            // For simplicity, I'm assuming that you already have the necessary data available in the page
+
+            // Populate the modal fields with data
+            var attendance = findAttendanceById(id);
+            if (attendance) {
+                $("#updateId").val(attendance.Id);
+                $("#updateDateTime").val(formatDateTime(attendance.DateTime));
+                // Populate other fields if needed
+            }
+        });
+
+        function findAttendanceById(id) {
+            // Implement a function to fetch attendance data by ID
+            // You can use JavaScript array functions or make an AJAX call to fetch the data from the server
+            // Return the attendance object or null if not found
+        }
+
+        function updateAttendance() {
+            // Submit the form for updating attendance using an API endpoint or AJAX call
+            // For simplicity, I'm assuming that you have a function that submits the form
+
+            // Submit the form using AJAX or other methods
+            $("form").submit();
+        }
+    </script>
 </body>
 </html>
-
-
-<!-- Add Bootstrap JS and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <script src="/js/product.js"></script>
