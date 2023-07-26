@@ -1,17 +1,48 @@
 ﻿@using MVCT.Models.Attandance;
 @model AttandanceDTO
 
-<form asp-action="Update">
-    <br />
 
-    <div class="Container border p-3">
-        <h1 class="text-secondary text-center">Update Attendance</h1>
-        <!-- Display the attendance record details here -->
-        <div class="form-group">
-            <label for="DateTime">Date and Time:</label>
-            <input type="datetime" class="form-control" id="DateTime" name="DateTime" value="@Model.DateTime" required>
+
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2"> Check-In && Check-Out </h2>
+            </div>
         </div>
-        <!-- Add any additional fields you want to update -->
-        <button type="submit" class="btn btn-primary">Update</button>
+
     </div>
-</form>
+    <div class="card-body p-4">
+         <div class = "row pb-3">
+        <div class="col-6 "> </h2></div>
+       
+    </div>
+        <table >
+    <thead>
+        <tr>
+            
+         <th></th>
+         
+        </tr>
+    </thead>
+    <tbody>
+                <form asp-action="Update">
+                    <br />
+                    <div class="Container ">
+                        <!-- Display the attendance record details here -->
+                        <div class="form-group">
+                            <label for="DateTime"><h3>Date and Time:</h3></label>
+                            <input type="datetime" class="form-control" id="DataTime" name="DateTime" value="@Model.DateTime" required>
+                        </div>
+                        <!-- Add any additional fields you want to update -->
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+    </tbody>
+</table>
+    </div>
+    </div>
+
+
+
