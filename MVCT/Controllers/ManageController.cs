@@ -391,6 +391,7 @@ namespace MVCT.Controllers
 
             user.HomeAdress = model.HomeAdress;
             user.BirthDate = model.BirthDate;
+            user.PhoneNumber = model.PhoneNumber;
             await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
