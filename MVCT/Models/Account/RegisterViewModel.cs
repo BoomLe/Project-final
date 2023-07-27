@@ -35,5 +35,10 @@ namespace MVCT.Models.Account
         [StringLength(100, ErrorMessage = "{0} phải dài từ {2} đến {1} ký tự.", MinimumLength = 3)]
         public string UserName { get; set; }
 
+        public string? returnUrl { get; set; }
+
+        public string ReponseCaptcha { get; set; }
+
+
     }
 }

@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using MVCT.Models.Account;
 using MVCT.Utilities;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace MVCT.Controllers
 {
@@ -126,59 +128,90 @@ namespace MVCT.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl)
         {
-            returnUrl ??= Url.Content("~/");
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            try
             {
-                var user = new AppUser { UserName = model.UserName, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+               
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret=6LcaTzQnAAAAAA047MkjVm3ppiZAymAE32Orfgy3&response={model.ReponseCaptcha}");
+                var responseBody = await response.Content.ReadAsStringAsync();
 
-                if (result.Succeeded)
+                // Phân tích kết quả xác thực từ responseBody
+                var recaptchaResult = JObject.Parse(responseBody);
+                bool success = recaptchaResult.Value<bool>("success");
+                // xác thực thành công
+                if (success)
                 {
-                    _logger.LogInformation("Đã tạo user mới.");
+                    if (model.UserName != null && model.Password != null && model.ConfirmPassword != null && model.Email != null)
+                    {
+                        var user = new AppUser { UserName = model.UserName, Email = model.Email };
+                        var result = await _userManager.CreateAsync(user, model.Password);
 
-                    // Phát sinh token để xác nhận email
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        if (result.Succeeded)
+                        {
+                            _logger.LogInformation("Đã tạo user mới.");
 
-                    // https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
-                    var callbackUrl = Url.ActionLink(
-                        action: nameof(ConfirmEmail),
-                        values:
-                            new
-                            {
-                                area = "Identity",
-                                userId = user.Id,
-                                code
-                            },
-                        protocol: Request.Scheme);
+                            // Phát sinh token để xác nhận email
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    await _emailSender.SendEmailAsync(model.Email,
-                        "Xác nhận địa chỉ email",
-                        @$"Bạn đã đăng ký tài khoản trên RazorWeb, 
+                            // https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
+                            var callbackUrl = Url.ActionLink(
+                                action: nameof(ConfirmEmail),
+                                values:
+                                    new
+                                    {
+                                        area = "Identity",
+                                        userId = user.Id,
+                                        code
+                                    },
+                                protocol: Request.Scheme);
+
+                            await _emailSender.SendEmailAsync(model.Email,
+                                "Xác nhận địa chỉ email",
+                                @$"Bạn đã đăng ký tài khoản trên RazorWeb, 
                            hãy <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>bấm vào đây</a> 
                            để kích hoạt tài khoản.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            {
+                                return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
+                            }
+                            else
+                            {
+                                await _signInManager.SignInAsync(user, isPersistent: false);
+                                return LocalRedirect(model.returnUrl);
+                            }
+
+                        }
+
+                        ModelState.AddModelError(result);
                     }
 
+
+                    return View(model);
                 }
 
-                ModelState.AddModelError(result);
+                return Ok(new { susccess = success, content = "Captcha không hợp lệ" });
+            }
+            catch (HttpRequestException ex)
+            {
+                // Xử lý lỗi khi gửi yêu cầu đến Google
+                Console.WriteLine($"Error sending request to Google reCaptcha API: {ex.Message}");
+                return Ok(new { susccess = false, content = $"Error sending request to Google reCaptcha API: {ex.Message}" });
+            }
+            catch (JsonException ex)
+            {
+                // Xử lý lỗi khi phân tích kết quả xác thực từ Google
+                Console.WriteLine($"Error parsing reCaptcha response: {ex.Message}");
+                return Ok(new { susccess = false, content = $"Error parsing reCaptcha response: {ex.Message}" });
+
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+
+        
+    }
 
         // GET: /Account/ConfirmEmail
         [HttpGet]
