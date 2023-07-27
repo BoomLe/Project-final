@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
     int i = 0;
     int l = 0;
+    int n =0;
 }
 
 
@@ -13,7 +14,7 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2"> Checkins</h2>
+                <h2 class="text-white py-2"> Danh sách CheckIn CheckOut</h2>
             </div>
         </div>
 
@@ -27,11 +28,10 @@
             <thead>
                 <tr>
                     <th>STT</th>
-                    <th>UserName</th>
-                    <th>Date</th>
-                    <th>Check-In</th>
-                    <th>Check-Out</th>
-                    <th>Details</th>
+                    <th>Tài khoản</th>
+                    <th>Giờ vào</th>
+                    <th>Giờ ra</th>
+                    <th>Thông tin</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,13 +40,13 @@
                     i++;
                     var @todayAttandances = attandance.Attandances;
                     <tr>
-                        <td>@(++i)</td>
+                        <td>@(++n)</td>
                         <td>@attandance.Username</td>
-                        <td>@attandance.DateTime.ToString("dd-MM-yyyy")</td>
+                @*        <td>@attandance.DateTime.ToString("dd-MM-yyyy")</td>*@
                         <td>@attandance.CheckIn</td>
                         <td>@attandance.CheckOut</td>
 
-                        <td><button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#details@(i)">Details</button></td>
+                        <td><button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#details@(i)">Thông tin</button></td>
 
 
                     </tr>
@@ -57,11 +57,9 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>DateTime</th>
-
-                                        
-                                        <th>Edit</th>
-                                        <th>Delete</th>
+                                        <th>Ngày giờ </th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,9 +69,10 @@
                                         <tr>
                                             <td>@(++l)</td>
                                             <td>@item.DateTime.ToString("dd-MM-yyyy HH:mm:ss ")</td>
-                                            <td> <a asp-controller="Attandances" asp-action="Update" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a></td>
+                                            <td> <a asp-controller="Attandances" asp-action="Update" asp-route-id="@item.Id" class="btn btn-success btn-sm">Sửa</a></td>
+                                        
                                             <td>
-                                                <a asp-controller="Attandances" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                                <a asp-controller="Attandances" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
                                             </td>
                                         </tr>
                                     }

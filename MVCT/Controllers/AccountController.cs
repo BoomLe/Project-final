@@ -46,8 +46,9 @@ namespace MVCT.Controllers
         }
 
         // GET: /Account/Login
+        //[Authorize]
         [HttpGet("/login/")]
-      
+
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
@@ -57,8 +58,9 @@ namespace MVCT.Controllers
 
         //
         // POST: /Account/Login
+        //[Authorize]
         [HttpPost("/login/")]
-      
+        //[HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
@@ -132,7 +134,7 @@ namespace MVCT.Controllers
         {
             try
             {
-               
+                //data.ReponseCaptcha = "vykhoi";
                 var httpClient = new HttpClient();
                 var response = await httpClient.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret=6LcaTzQnAAAAAA047MkjVm3ppiZAymAE32Orfgy3&response={model.ReponseCaptcha}");
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -176,13 +178,19 @@ namespace MVCT.Controllers
 
                             if (_userManager.Options.SignIn.RequireConfirmedAccount)
                             {
+                              
+
                                 return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
+
+
                             }
                             else
                             {
                                 await _signInManager.SignInAsync(user, isPersistent: false);
                                 return LocalRedirect(model.returnUrl);
                             }
+
+
 
                         }
 
@@ -192,8 +200,9 @@ namespace MVCT.Controllers
 
                     return View(model);
                 }
+                //return View();
 
-                return Ok(new { susccess = success, content = "Captcha không hợp lệ" });
+                return Ok(new { susccess = success, content = "Captcha không hợp lệ" ,data = model});
             }
             catch (HttpRequestException ex)
             {
@@ -210,8 +219,7 @@ namespace MVCT.Controllers
             }
 
 
-        
-    }
+        }
 
         // GET: /Account/ConfirmEmail
         [HttpGet]

@@ -1,7 +1,10 @@
-﻿namespace MVCT.Models.Member
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MVCT.Models.Member
 {
     public class MemberAttandanceInfo
     {
+       
         public DateTime? CheckIn { get; set; }
         public DateTime? CheckOut { set; get; }
     }

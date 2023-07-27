@@ -19,7 +19,10 @@ namespace MVCT.Models.Manage
 
 
         [Display(Name = "Ngày sinh")]
-        [DataType(DataType.DateTime)]
+        //[DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+
+       
     }
 }
