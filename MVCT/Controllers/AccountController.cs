@@ -164,6 +164,7 @@ namespace MVCT.Controllers
                                 values:
                                     new
                                     {
+                                        
                                         area = "Identity",
                                         userId = user.Id,
                                         code
@@ -178,7 +179,7 @@ namespace MVCT.Controllers
 
                             if (_userManager.Options.SignIn.RequireConfirmedAccount)
                             {
-                              
+                               
 
                                 return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
 

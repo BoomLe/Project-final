@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,6 +24,9 @@ namespace MVCT.Models.Manage
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
-       
+        public string SelectCountries { set; get; }
+        public List<SelectListItem> Countrieslist { set; get; }
+
+
     }
 }

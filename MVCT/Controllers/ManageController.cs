@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCT.Models.Manage;
+using MVCT.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SkiaSharp;
 
 namespace MVCT.Controllers
 {
@@ -23,13 +27,16 @@ namespace MVCT.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
+        private readonly ApplicationDbContext _db;
 
         public ManageController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
         IEmailSender emailSender,
-        ILogger<ManageController> logger)
+        ILogger<ManageController> logger,
+        ApplicationDbContext db)
         {
+            _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -66,6 +73,7 @@ namespace MVCT.Controllers
                     UserName = user.UserName,
                     UserEmail = user.Email,
                     PhoneNumber = user.PhoneNumber,
+                    SelectCountries = user.Country
                 }
             };
             return View(model);
@@ -381,23 +389,41 @@ namespace MVCT.Controllers
                 UserName = user.UserName,
                 UserEmail = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                SelectCountries = user.Country
             };
+
+            var countries = _db.Citys.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Country }).ToList();
+            model.Countrieslist = countries;
+
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> EditProfileAsync(EditExtraProfileModel model)
         {
-            var user = await GetCurrentUserAsync();
+            if (!ModelState.IsValid)
+            {
+                var countries = _db.Citys.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Country }).ToList();
+                model.Countrieslist = countries;
+                var user = await GetCurrentUserAsync();
 
-            user.HomeAdress = model.HomeAdress;
-            user.BirthDate = model.BirthDate;
-            user.PhoneNumber = model.PhoneNumber;
-            await _userManager.UpdateAsync(user);
+                user.HomeAdress = model.HomeAdress;
+                user.BirthDate = model.BirthDate;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Country = model.SelectCountries;
 
-            await _signInManager.RefreshSignInAsync(user);
+                await _userManager.UpdateAsync(user);
+                await _signInManager.RefreshSignInAsync(user);
+
+                return RedirectToAction(nameof(Index), "Manage");
+            }
+
+         
+
             return RedirectToAction(nameof(Index), "Manage");
-
         }
+
+     
 
 
     }

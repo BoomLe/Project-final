@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVCT.Models.Manage
 {
@@ -20,5 +21,7 @@ namespace MVCT.Models.Manage
         public bool BrowserRemembered { get; set; }
 
         public string AuthenticatorKey { get; set; }
+        public string SelectCountries { set; get; }
+        public List<SelectListItem> Countrieslist { set; get; }
     }
 }

@@ -12,6 +12,8 @@ namespace MVCT.Models
           [Column(TypeName = "nvarchar")]
           [StringLength(400)]  
           public string? HomeAdress { get; set; }
+         
+         public string? Country { set; get; }
 
         // [Required]       
         [DataType(DataType.DateTime)]

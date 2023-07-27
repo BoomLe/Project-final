@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 using MVCT.Models.Attandance;
 using MVCT.Models.UserReport;
+using MVCT.Models.Manage;
 
 namespace MVCT.Data
 {
@@ -17,7 +18,7 @@ namespace MVCT.Data
         }
 
 
-
+        public DbSet<Citys> Citys { set; get; }
         public DbSet<Attandances> Attandances { set; get; }
 
         public DbSet<UserReports> UserReports { set; get; }
@@ -26,7 +27,7 @@ namespace MVCT.Data
         {
             base.OnModelCreating(builder);
 
-
+            
             builder.Entity<Attandances>().HasOne(p => p.User).WithMany(u => u.Attandances).HasForeignKey(a => a.UserId);
             builder.Entity<UserReports>().HasOne(p => p.User).WithMany(u => u.UserReports).HasForeignKey(a => a.UserId);
 
