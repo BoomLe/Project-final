@@ -18,9 +18,17 @@ namespace MVCT.Controllers
         }
         public async Task< IActionResult> Index()
         {
-            List<UserReports> listReport = await _repository.GetAllAsync(includeProperties:"User");
+            //List<UserReports> listReport = await _repository.GetAllAsync(includeProperties:"User");
 
-            return View(listReport);
+            //return View(listReport);
+            
+            var emp = await _repository.GetAllAsync();
+            UserReportsViewModel vm = new UserReportsViewModel();
+        
+            vm.UserReports = emp;
+         
+            
+            return View(vm);
         }
 
         [HttpGet]
@@ -33,22 +41,25 @@ namespace MVCT.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReport(UserReportDto model) 
+        public async Task<IActionResult> CreateReport(UserReportsViewModel model) 
         {
       
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-                UserReports userModel = new ()
-                {  
-                     SendnDate = DateTime.Now,
+                UserReports userModel = new()
+                {
+                    SendnDate = DateTime.Now,
                     Description = model.Description,
-                    Messages = model.Messages,                   
-                    //User = user
-                    UserId = user.Id
+                    Messages = model.Messages,
+                   UserId = user.Id,
+                    Username = user.UserName
+                  
+                    
 
                 };
+              
                 await _repository.CreatedAsync(userModel);
          
                 TempData["StatusMessage"] = "Thông tin đã gửi thành công";
@@ -73,39 +84,19 @@ namespace MVCT.Controllers
             return View(detailReport);
         }
 
-        [HttpGet()]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task< JsonResult> DeleteEmployee(int id)
         {
-         
+            bool result = false;
 
-            UserReports listReport = await _repository.GetAsync(p => p.Id == id);
+            var emp = await _repository.GetAsync(p => p.Id ==id);
 
-            if (listReport == null)
+            if (emp != null)
             {
-                return NotFound();
+                result = true;
+                await _repository.RemoveAsync(emp);
             }
-
-            return View(listReport);
+            return Json(result);
         }
-
-        // POST: Contact/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            UserReports reModel = await _repository.GetAsync(p=> p.Id == id);
-
-
-            if (reModel == null)
-            {
-                return NotFound();
-            }
-            await _repository.RemoveAsync(reModel);
-
-            await _repository.SaveAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
 
     }
 }

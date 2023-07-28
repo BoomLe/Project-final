@@ -14,6 +14,7 @@ namespace MVCT.Models.UserReport
 
         public string  Messages { set; get; }
 
+        public string? Username { set; get; }
         public string UserId { set; get; }
 
         public AppUser User { set; get; }

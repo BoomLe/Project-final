@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
     int i = 0;
     int l = 0;
-    int n =0;
+    int n = 0;
 }
 
 
@@ -42,7 +42,7 @@
                     <tr>
                         <td>@(++n)</td>
                         <td>@attandance.Username</td>
-                @*        <td>@attandance.DateTime.ToString("dd-MM-yyyy")</td>*@
+                        @*        <td>@attandance.DateTime.ToString("dd-MM-yyyy")</td>*@
                         <td>@attandance.CheckIn</td>
                         <td>@attandance.CheckOut</td>
 
@@ -70,7 +70,7 @@
                                             <td>@(++l)</td>
                                             <td>@item.DateTime.ToString("dd-MM-yyyy HH:mm:ss ")</td>
                                             <td> <a asp-controller="Attandances" asp-action="Update" asp-route-id="@item.Id" class="btn btn-success btn-sm">Sửa</a></td>
-                                        
+
                                             <td>
                                                 <a asp-controller="Attandances" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
                                             </td>
@@ -88,4 +88,3 @@
     </div>
 </div>
 <script src="/js/product.js"></script>
-

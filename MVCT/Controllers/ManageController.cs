@@ -392,7 +392,7 @@ namespace MVCT.Controllers
                 SelectCountries = user.Country
             };
 
-            var countries = _db.Citys.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Country }).ToList();
+            var countries = _db.Citys.Select(c => new SelectListItem { Value = c.Country.ToString(), Text = c.Country }).ToList();
             model.Countrieslist = countries;
 
             return View(model);
@@ -403,7 +403,7 @@ namespace MVCT.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var countries = _db.Citys.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Country }).ToList();
+                var countries = _db.Citys.Select(c => new SelectListItem { Value = c.Country.ToString(), Text = c.Country }).ToList();
                 model.Countrieslist = countries;
                 var user = await GetCurrentUserAsync();
 

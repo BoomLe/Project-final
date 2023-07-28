@@ -9,8 +9,10 @@ namespace MVCT.Models.UserReport
         public DateTime SendnDate { set; get; }
         public string Description { set; get; }
         
+        //public string? Username { set; get; }
 
         public string Messages { set; get; }
+
 
 
 

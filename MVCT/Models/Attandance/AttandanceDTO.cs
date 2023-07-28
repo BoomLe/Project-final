@@ -12,6 +12,7 @@ namespace MVCT.Models.Attandance
         public DateTime DateTime { get; set; }
 
         public List<Attandances>? Attandances { set; get; }
+      
 
         public string? UserId { set; get; }
 

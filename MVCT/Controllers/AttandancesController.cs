@@ -40,9 +40,13 @@ namespace MVCT.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
+            
+           
+            
             List<Attandances> objAttList = await _repository.GetAllAsync(includeProperties: "User");
             List<AttandanceDTO> result = new List<AttandanceDTO>();
-           
+        
+
             var groupByUsers = objAttList.GroupBy(x => new { x.User, x.DateTime.Date });
             foreach (var item in groupByUsers)
             {
@@ -66,7 +70,7 @@ namespace MVCT.Controllers
                     CheckIn = checkIn,
                     CheckOut = checkOut,
                     Username = user.UserName,
-                   DateTime  = item.Key.Date,
+                    DateTime = item.Key.Date,
                     Attandances = attendances
                 };
                 result.Add(model);
@@ -102,14 +106,14 @@ namespace MVCT.Controllers
             return View(attandanceDTO);
         }
         [HttpPost, ActionName("Update")]
-        public async Task<IActionResult> UpdateAsync(int id,AttandanceDTO model)
+        public async Task<IActionResult> UpdateAsync(int id, AttandanceDTO model)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if(id != model.Id) 
+            if (id != model.Id)
             {
                 return NotFound();
             }
-            
+
             if (ModelState.IsValid)
             {
                 Attandances attandances = await _repository.GetAsync(p => p.Id == model.Id);
@@ -125,7 +129,7 @@ namespace MVCT.Controllers
                     return NotFound();
                 }
 
-                
+
 
                 await _repository.UpdatedAsync(attandances);
 
@@ -135,7 +139,7 @@ namespace MVCT.Controllers
 
             return View(model);
         }
-        public async Task<IActionResult> Delete(int id) 
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null || id == 0)
             {
@@ -158,14 +162,13 @@ namespace MVCT.Controllers
             {
                 return NotFound();
             }
-          
-          await  _repository.RemoveAsync(foundId);
+
+            await _repository.RemoveAsync(foundId);
             TempData["success"] = "Bạn đã xóa thành công !";
             return RedirectToAction("Index");
         }
 
-    
+
     }
 }
-    
 

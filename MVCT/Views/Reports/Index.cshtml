@@ -1,5 +1,5 @@
 ﻿@using MVCT.Models.UserReport;
-@model IEnumerable<UserReports>
+@model UserReportsViewModel
 @inject UserManager<AppUser> userManager;
 
 @{
@@ -27,6 +27,7 @@
         <div class="col-6 "> </h2></div>
        
     </div>
+        <input hidden asp-for="UserReport.Id" />
         <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -39,12 +40,13 @@
         </tr>
     </thead>
     <tbody>
-      @foreach (var obj in Model)
+      @foreach (var obj in Model.UserReports)
       {
         <tr>
             <td>@(++i)</td>
             <td>
-                @obj.User.UserName
+                            @*@obj.UserId.ToString(userManager.FindByNameAsync(User);*@
+                            @obj.Username
             </td>
             <td>
                 @obj.Description
@@ -57,9 +59,8 @@
                                 <a asp-controller="Reports" asp-action="Details" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
                                     <i class="bi bi-pencil-square"></i> Xem
                                 </a>
-                                <a asp-controller="Reports" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash-fill"></i> Xóa
-                                </a>
+
+                                <a id="EmpId" class="btn btn-danger" onclick="Confirm(@obj.Id)">Delete</a>
                             </div>
         </td>
 
@@ -72,3 +73,41 @@
     </div>
 
 
+<!--Delete-->
+<div class="modal fade" id="DeleteModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+
+            <form id="saveForm" method="post">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Employee</h5>
+
+           
+
+                </div>
+                <div class="modal-body">
+
+                    <h2>Are you sure Delete ?</h2>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">
+                        Closer
+                       @* <span aria-hidden="true">&times;</span>*@
+                    </button>
+                    <button id="btnDelete" type="button" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="/js/product.js">
+
+    </script>
+}
